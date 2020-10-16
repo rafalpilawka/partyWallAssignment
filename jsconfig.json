@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@utils/*": [
+                "src/utils/*"
+            ],
+            "@screens/*": [
+                "src/screens/*"
+            ],
+            "@components/*": [
+                "src/components/*"
+            ],
+            "@navigation/*": [
+                "src/navigation/*"
+            ],
+            "@constants/*": [
+                "src/constants/*"
+            ],
+            "@config/*": [
+                "src/config/*"
+            ],
+            "@store/*": [
+                "src/astore/*"
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules",
+        "build"
+    ]
+}
