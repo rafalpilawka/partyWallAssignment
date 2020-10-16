@@ -13,25 +13,25 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@utils/*": [
+      "utils/*": [
         "src/utils/*"
       ],
-      "@screens/*": [
+      "screens/*": [
         "src/screens/*"
       ],
-      "@components/*": [
+      "components/*": [
         "src/components/*"
       ],
-      "@navigation/*": [
+      "navigation/*": [
         "src/navigation/*"
       ],
-      "@constants/*": [
+      "constants/*": [
         "src/constants/*"
       ],
-      "@config/*": [
+      "config/*": [
         "src/config/*"
       ],
-      "@store/*": [
+      "store/*": [
         "src/astore/*"
       ]
     },

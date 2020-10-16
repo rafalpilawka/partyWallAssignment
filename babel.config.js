@@ -8,13 +8,14 @@ module.exports = function(api) {
         {
           extensions: [".js", ".ios.js", ".android.js", ".json", "ts", "tsx"],
           alias: {
-            "@assets": "./assets",
-            "@components": "./src/components",
-            "@utils": "./src/services",
-            "@store": "./store",
-            "@types": "./src/types",
-            "@constants": "./src/constants",
-            "@config": "./src/config"
+            "assets": "./assets",
+            "components": "./src/components",
+            "utils": "./src/services",
+            "store": "./store",
+            "types": "./src/types",
+            "constants": "./src/constants",
+            "config": "./src/config",
+            "screens": "./src/screens"
           }
         }
       ]
