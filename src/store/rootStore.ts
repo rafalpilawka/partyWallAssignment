@@ -1,11 +1,11 @@
 import {all, call} from 'redux-saga/effects';
-import {applyMiddleware, combineReducers, createStore, Reducer} from 'redux';
+import {applyMiddleware, combineReducers, createStore} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
-import {watchDrinksSaga} from 'src/store/drinks/drinks.sagas';
-import {Action} from 'src/store/reduxAction.types';
+import {watchDrinksSaga} from 'src/store/items/items.sagas';
+import { Action, ActionPayload } from "src/store/reduxAction.types";
 import userReducer from 'src/store/user/user.reducer';
-import drinksReducer from 'src/store/drinks/drinks.reducer';
+import itemsReducer from 'src/store/items/items.reducer';
 import {watchUserSaga} from 'src/store/user/user.sagas';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -20,10 +20,10 @@ function* rootSaga() {
 
 const store = combineReducers({
   user: userReducer,
-  drink: drinksReducer,
+  items: itemsReducer,
 });
 
-const rootStore = (state: any, action: Action<any>) => {
+const rootStore = (state: any, action: Action| ActionPayload<any>) => {
   if (action.type === 'CLEAR_FULL_STORE') {
     state = undefined;
   }

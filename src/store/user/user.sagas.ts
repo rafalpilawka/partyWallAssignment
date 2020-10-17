@@ -1,5 +1,5 @@
-import {takeLeading, put} from 'redux-saga/effects';
-import {Action} from 'src/store/reduxAction.types';
+import {takeLeading, put, call} from 'redux-saga/effects';
+import {ActionPayload} from 'src/store/reduxAction.types';
 import {
   LOGIN,
   loginPending,
@@ -13,14 +13,44 @@ import {
   logoutPending,
   logoutResolved,
   logoutRejected,
+  SETUP_USER,
+  setupUseResolved,
+  setupUseRejected,
+  setupUserPending,
 } from 'src/store/user/user.actions';
 import {IUserRegisterData, TCredentials} from 'src/store/user/user.types';
+import {
+  createProfileApi,
+  getUserdataApi,
+  loginUserApi,
+  logoutUserApi,
+  registerUserApi,
+} from 'src/store/user/user.api';
+
+export function* setUserSaga({
+  payload,
+}: ActionPayload<{uid: string; email: string}>): IterableIterator<any> {
+  if (!payload) return;
+  try {
+    yield put(setupUserPending());
+    const {email, uid} = payload;
+    const response: any = yield getUserdataApi(uid);
+    const {name, surname} = response;
+    yield put(setupUseResolved({name, surname, email}));
+  } catch (e) {
+    yield put(setupUseRejected());
+  }
+}
 
 export function* loginUserSaga({
   payload,
-}: Action<TCredentials>): IterableIterator<any> {
+}: ActionPayload<TCredentials>): IterableIterator<any> {
+  if (!payload) return;
   try {
     yield put(loginPending());
+    const response: any = yield call(loginUserApi, payload);
+    const {uid} = response!.user;
+    yield call(setUserSaga, uid);
     yield put(loginResolved(payload));
   } catch (e) {
     yield put(loginRejected());
@@ -28,20 +58,23 @@ export function* loginUserSaga({
 }
 export function* registerUserSaga({
   payload,
-}: Action<IUserRegisterData>): IterableIterator<any> {
+}: ActionPayload<IUserRegisterData>): IterableIterator<any> {
   try {
     yield put(registerPending());
-    yield put(registerResolved());
+    const {name, surname, email, password} = payload;
+    const credentials = {email, password};
+    const response: any = yield registerUserApi(credentials);
+    yield call(createProfileApi, response.user.uid, name, surname);
+    yield put(registerResolved({name, surname}));
   } catch (e) {
     yield put(registerRejected());
   }
 }
 
-export function* logoutSaga({
-  payload,
-}: Action<IUserRegisterData>): IterableIterator<any> {
+export function* logoutSaga(): IterableIterator<any> {
   try {
     yield put(logoutPending());
+    yield call(logoutUserApi);
     yield put(logoutResolved());
   } catch (e) {
     yield put(logoutRejected());
@@ -49,6 +82,7 @@ export function* logoutSaga({
 }
 
 export function* watchUserSaga(): IterableIterator<any> {
+  yield takeLeading(SETUP_USER.saga, setUserSaga);
   yield takeLeading(LOGIN.saga, loginUserSaga);
   yield takeLeading(REGISTER.saga, registerUserSaga);
   yield takeLeading(LOGOUT.saga, logoutSaga);

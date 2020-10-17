@@ -1,10 +1,13 @@
 import {StatusBar} from 'expo-status-bar';
-import React from 'react';
+import {User} from 'firebase';
+import React, {useEffect} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider as PaperProvider, DefaultTheme} from 'react-native-paper';
+import {setupUserAction} from 'src/store/user/user.actions';
 import Navigation from './src/navigation/RootNavigator';
 import useCachedResources from './src/hooks/useCachedResources';
 import {Provider as ReduxProvider} from 'react-redux';
+import {auth} from 'src/utils/services/api/firebase';
 import store from 'src/store/rootStore';
 
 //TODO IMPLEMENT DARK LIGHT THEME
@@ -21,6 +24,16 @@ const theme = {
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
+
+  useEffect(() => {
+    auth.onAuthStateChanged(async (res: User | null) => {
+      if (res) {
+        const {uid, email}: User = res;
+        store.dispatch(setupUserAction(uid, email!));
+      } else if (res) {
+      }
+    });
+  }, []);
 
   if (!isLoadingComplete) {
     return null;

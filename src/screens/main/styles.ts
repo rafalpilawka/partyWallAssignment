@@ -5,7 +5,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 15,
     justifyContent: 'space-between',
-    alignItems: 'center',
   },
   button: {
     height: 56,

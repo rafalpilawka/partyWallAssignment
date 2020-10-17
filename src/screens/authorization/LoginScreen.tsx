@@ -18,7 +18,6 @@ export default function ({navigation}: any): ReactElement {
     }
   };
 
-
   //TODO - ADD FORMIK AND YUP SCHEMAS VALIDATORS
   return (
     <View style={styles.container}>
@@ -29,6 +28,7 @@ export default function ({navigation}: any): ReactElement {
         mode="outlined"
         style={styles.button}
         textContentType="emailAddress"
+        autoCapitalize="none"
       />
       <TextInput
         label="Password"
