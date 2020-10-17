@@ -2,10 +2,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "moduleResolution": "node",
     "noEmit": true,
     "skipLibCheck": true,
@@ -13,27 +10,13 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "utils/*": [
-        "src/utils/*"
-      ],
-      "screens/*": [
-        "src/screens/*"
-      ],
-      "components/*": [
-        "src/components/*"
-      ],
-      "navigation/*": [
-        "src/navigation/*"
-      ],
-      "constants/*": [
-        "src/constants/*"
-      ],
-      "config/*": [
-        "src/config/*"
-      ],
-      "store/*": [
-        "src/astore/*"
-      ]
-    },
+      "src/utils/*": ["src/utils/*"],
+      "src/screens/*": ["src/screens/*"],
+      "src/components/*": ["src/components/*"],
+      "src/navigation/*": ["src/navigation/*"],
+      "src/constants/*": ["src/constants/*"],
+      "src/config/*": ["src/config/*"],
+      "src/store/*": ["src/astore/*"]
+    }
   }
 }

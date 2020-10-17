@@ -15,7 +15,8 @@ module.exports = function(api) {
             "types": "./src/types",
             "constants": "./src/constants",
             "config": "./src/config",
-            "screens": "./src/screens"
+            "screens": "./src/screens",
+            "src":"./src"
           }
         }
       ]
