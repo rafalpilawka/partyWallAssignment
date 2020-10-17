@@ -5,6 +5,7 @@ enum Screens {
   FOOD = 'FOOD',
   DRINK = 'DRINK',
   HOME = 'HOME',
+  ADD = 'ADD',
 }
 
 export default Screens;

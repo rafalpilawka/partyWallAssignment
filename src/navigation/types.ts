@@ -8,6 +8,7 @@ export type RootStackParamList = {
 export type BottomTabParamList = {
   [Screens.FOOD]: undefined;
   [Screens.DRINK]: undefined;
+  [Screens.ADD]: undefined;
 };
 
 export type TabOneParamList = {
