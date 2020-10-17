@@ -1,22 +1,24 @@
+import Screens from './Screens';
+
 export type RootStackParamList = {
-    Main: undefined;
-    Authorization: undefined;
-  };
-  
-  export type BottomTabParamList = {
-    TabOne: undefined;
-    TabTwo: undefined;
-  };
-  
-  export type TabOneParamList = {
-    TabOneScreen: undefined;
-  };
-  
-  export type TabTwoParamList = {
-    TabTwoScreen: undefined;
-  };
-  
-  export type AuthStackParamList = {
-    LoginScreen: undefined;
-    RegisterScreen: undefined;
-  }
+  [Screens.HOME]: undefined;
+  [Screens.AUTHORIZATION]: undefined;
+};
+
+export type BottomTabParamList = {
+  [Screens.FOOD]: undefined;
+  [Screens.DRINK]: undefined;
+};
+
+export type TabOneParamList = {
+  TabOneScreen: undefined;
+};
+
+export type TabTwoParamList = {
+  TabTwoScreen: undefined;
+};
+
+export type AuthStackParamList = {
+  [Screens.LOGIN]: undefined;
+  [Screens.REGISTER]: undefined;
+};

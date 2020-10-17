@@ -1,6 +1,11 @@
-export const Screens = {
-  LOGIN: "LOGIN",
-  REGISTER: "REGISTER", 
-};
+enum Screens {
+  AUTHORIZATION = 'AUTHORIZATION',
+  LOGIN = 'LOGIN',
+  REGISTER = 'REGISTER',
+  FOOD = 'FOOD',
+  DRINK = 'DRINK',
+  HOME = 'HOME',
+}
 
-export type TScreens = typeof Screens;
+export default Screens;
+export type ScreensType = keyof typeof Screens;
