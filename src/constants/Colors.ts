@@ -1,3 +1,4 @@
+//TODO LEFT FOR DARK LIGHT THEME IMPLEMENTATION
 const tintColorLight = '#2f95dc';
 const tintColorDark = '#fff';
 

@@ -1,12 +1,13 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Screens from 'src/navigation/Screens';
-import {Store} from 'src/contexts/contexts';
 import React, {ReactElement} from 'react';
+import {useSelector} from 'react-redux';
 import {RootStackParamList} from 'src/navigation/types';
 import BottomTabNavigator from 'src/navigation/BottomTabNavigator';
 import LinkingConfiguration from 'src/config/LinkingConfiguration';
 import AuthStack from 'src/navigation/AuthorizationStack';
+import {selectUser} from 'src/store/user/user.selector';
 
 const Navigation = (): ReactElement => {
   return (
@@ -18,8 +19,8 @@ const Navigation = (): ReactElement => {
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-function RootNavigator(): ReactElement {
-  const {user} = React.useContext(Store);
+const RootNavigator = (): ReactElement => {
+  const user = useSelector(selectUser);
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       {!user ? (
@@ -29,6 +30,6 @@ function RootNavigator(): ReactElement {
       )}
     </Stack.Navigator>
   );
-}
+};
 
 export default Navigation;

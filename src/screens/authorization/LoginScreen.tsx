@@ -1,18 +1,25 @@
-import {Store} from 'src/contexts/contexts';
+import {useDispatch} from 'react-redux';
 import Screens from 'src/navigation/Screens';
 import React, {ReactElement} from 'react';
 import {View} from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
+import {loginAction} from 'src/store/user/user.actions';
 import {styles} from './styles';
 
 export default function ({navigation}: any): ReactElement {
+  const dispatch = useDispatch();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const {user, setUser} = React.useContext(Store);
 
   const _navigationHandler = (): void => navigation.navigate(Screens.REGISTER);
-  const _loginAction = (): void => setUser(() => !user);
+  const _loginAction = (): void => {
+    if (email.length && password.length) {
+      dispatch(loginAction({email, password}));
+    }
+  };
 
+
+  //TODO - ADD FORMIK AND YUP SCHEMAS VALIDATORS
   return (
     <View style={styles.container}>
       <TextInput
@@ -21,6 +28,7 @@ export default function ({navigation}: any): ReactElement {
         onChangeText={(text: string) => setEmail(text)}
         mode="outlined"
         style={styles.button}
+        textContentType="emailAddress"
       />
       <TextInput
         label="Password"
