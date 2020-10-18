@@ -11,20 +11,20 @@ export const SETUP_USER = createAsyncTypes('SETUP_USER');
 export const setupUserAction = (
   uid: string,
   email: string,
-): ActionPayload<string> => ({
+): ActionPayload<{uid: string; email: string}> => ({
   type: SETUP_USER.saga,
   payload: {uid, email},
 });
 export const setupUserPending = (): Action => ({
   type: SETUP_USER.pending,
 });
-export const setupUseResolved = (
+export const setupUserResolved = (
   data: TUserData,
 ): ActionPayload<TUserData> => ({
   type: SETUP_USER.resolved,
   payload: data,
 });
-export const setupUseRejected = (): Action => ({
+export const setupUserRejected = (): Action => ({
   type: SETUP_USER.rejected,
 });
 /*

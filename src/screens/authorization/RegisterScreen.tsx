@@ -27,7 +27,7 @@ export default function ({navigation}: any): ReactElement {
       password,
       passwordConfirmation,
     };
-    InputValidators.register
+    InputValidators.registerScheme
       .validate(registerData)
       .then((_) => {
         dispatch(registerAction(registerData));

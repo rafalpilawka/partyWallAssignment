@@ -14,8 +14,8 @@ import {
   logoutResolved,
   logoutRejected,
   SETUP_USER,
-  setupUseResolved,
-  setupUseRejected,
+  setupUserResolved,
+  setupUserRejected,
   setupUserPending,
 } from 'src/store/user/user.actions';
 import {IUserRegisterData, TCredentials} from 'src/store/user/user.types';
@@ -35,10 +35,10 @@ export function* setUserSaga({
     yield put(setupUserPending());
     const {email, uid} = payload;
     const response: any = yield getUserdataApi(uid);
-    const {name, surname} = response;
-    yield put(setupUseResolved({name, surname, email}));
+    const {name, surname} = response.data();
+    yield put(setupUserResolved({name, surname, email, uid}));
   } catch (e) {
-    yield put(setupUseRejected());
+    yield put(setupUserRejected());
   }
 }
 
