@@ -1,5 +1,11 @@
 import React, {ReactElement, useState} from 'react';
-import {Pressable, ScrollView} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  View,
+} from 'react-native';
 import {Button, TextInput, Text, Menu} from 'react-native-paper';
 import {addItemAction} from 'src/store/items/items.actions';
 import {TVariant} from 'src/store/items/items.types';
@@ -11,12 +17,12 @@ import {styles} from './styles';
 
 const AddScreen = (): ReactElement => {
   const {uid} = useSelector(selectUser);
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState('');
   const [name, setName] = useState('');
   const [type, setType] = useState('');
   const [variant, setVariant] = useState<TVariant>('food');
   const [description, setDescription] = useState('');
-  const [volume, setVolume] = useState(0);
+  const [volume, setVolume] = useState('');
   const [weight, setWeight] = useState('');
   const [visible, setVisible] = useState(false);
 
@@ -35,10 +41,9 @@ const AddScreen = (): ReactElement => {
   const _addHandler = (): void => {
     const itemData = {
       name,
-      price,
+      price: +price,
       type,
     };
-    debugger;
     if (variant === 'food') {
       InputValidators.addFoodItemScheme
         .validate(itemData)
@@ -64,7 +69,7 @@ const AddScreen = (): ReactElement => {
               ...itemData,
               variant,
               createdBy: uid,
-              volume,
+              volume: +volume,
             }),
           );
         })
@@ -89,85 +94,93 @@ const AddScreen = (): ReactElement => {
           onChangeText={(text) => setWeight(text)}
           mode="outlined"
           style={styles.button}
-          keyboardType="numeric"
+          keyboardType="decimal-pad"
         />
       </>
     ) : (
       <TextInput
         label="Volume"
-        value={volume.toString()}
-        onChangeText={(text) => setVolume(+text)}
+        value={volume}
+        onChangeText={(text) => setVolume(text)}
         mode="outlined"
         style={styles.button}
-        keyboardType="numeric"
+        keyboardType="decimal-pad"
       />
     );
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <Menu
-          style={[styles.menu]}
-          visible={visible}
-          onDismiss={_toggleMenu}
-          anchor={
-            <Pressable onPress={_toggleMenu}>
-              <TextInput
-                pointerEvents={'none'}
-                label="Main type"
-                value={variant}
-                disabled
-                style={styles.button}
-                textContentType="emailAddress"
+      <KeyboardAvoidingView
+        style={{
+          flex: 1,
+        }}
+        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
+        <View style={{flex: 1}}>
+          <ScrollView>
+            <Menu
+              style={[styles.menu]}
+              visible={visible}
+              onDismiss={_toggleMenu}
+              anchor={
+                <Pressable onPress={_toggleMenu}>
+                  <TextInput
+                    pointerEvents={'none'}
+                    label="Main type"
+                    value={variant}
+                    disabled
+                    style={styles.button}
+                    textContentType="emailAddress"
+                  />
+                </Pressable>
+              }>
+              <Menu.Item
+                onPress={() => _setVariant('food')}
+                title="Food"
+                style={{width: '100%'}}
               />
-            </Pressable>
-          }>
-          <Menu.Item
-            onPress={() => _setVariant('food')}
-            title="Food"
-            style={{width: '100%'}}
-          />
-          <Menu.Item onPress={() => _setVariant('drink')} title="Drink" />
-        </Menu>
-        <TextInput
-          label="Item name"
-          value={name}
-          onChangeText={(text) => setName(text)}
-          mode="outlined"
-          style={styles.button}
-        />
-        <TextInput
-          label="Type"
-          value={type}
-          onChangeText={(text) => setType(text)}
-          mode="outlined"
-          style={styles.button}
-        />
-        {_renderVariant()}
-        <TextInput
-          label="Price"
-          value={price.toString()}
-          onChangeText={(text) => setPrice(+text)}
-          mode="outlined"
-          style={styles.button}
-          textContentType="password"
-          keyboardType="numeric"
-          onSubmitEditing={_addHandler}
-        />
-        {errors && (
-          <Text style={{color: 'red'}}>
-            There are some problems with form , please check it out
-          </Text>
-        )}
-        <Button
-          style={styles.buttonContainer}
-          labelStyle={styles.buttonFont}
-          icon="plus-circle"
-          compact
-          onPress={_addHandler}>
-          ADD ITEM
-        </Button>
-      </ScrollView>
+              <Menu.Item onPress={() => _setVariant('drink')} title="Drink" />
+            </Menu>
+            <TextInput
+              label="Item name"
+              value={name}
+              onChangeText={(text) => setName(text)}
+              mode="outlined"
+              style={styles.button}
+            />
+            <TextInput
+              label="Type"
+              value={type}
+              onChangeText={(text) => setType(text)}
+              mode="outlined"
+              style={styles.button}
+            />
+            {_renderVariant()}
+            <TextInput
+              label="Price"
+              value={price.toString()}
+              onChangeText={(text) => setPrice(text)}
+              mode="outlined"
+              style={styles.button}
+              textContentType="password"
+              keyboardType="decimal-pad"
+              onSubmitEditing={_addHandler}
+            />
+            {errors && (
+              <Text style={{color: 'red'}}>
+                There are some problems with form , please check it out
+              </Text>
+            )}
+            <Button
+              style={styles.buttonContainer}
+              labelStyle={styles.buttonFont}
+              icon="plus-circle"
+              compact
+              onPress={_addHandler}>
+              ADD ITEM
+            </Button>
+          </ScrollView>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

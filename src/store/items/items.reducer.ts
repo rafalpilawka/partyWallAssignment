@@ -10,7 +10,7 @@ import type {Action, ActionPayload} from 'src/store/reduxAction.types';
 export type ReduxState = {
   loading: boolean;
   food: IFood[];
-  drinks: IDrink[];
+  drink: IDrink[];
   selectedFood: any;
   selectedDrinks: any;
 };
@@ -18,7 +18,7 @@ export type ReduxState = {
 const INITIAL_STATE: ReduxState = {
   loading: false,
   food: [],
-  drinks: [],
+  drink: [],
   selectedFood: null,
   selectedDrinks: null,
 };
@@ -43,10 +43,10 @@ export default (
       };
     }
     case GET_COLLECTION.resolved: {
-      const variant = action.payload.variant;
+      const {variant, list} = action.payload;
       return {
         ...state,
-        [variant]: action.payload,
+        [variant]: list,
         loading: false,
       };
     }

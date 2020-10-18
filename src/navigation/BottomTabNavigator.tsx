@@ -3,13 +3,11 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useTheme} from 'react-native-paper';
 import Screens from 'src/navigation/Screens';
 import * as React from 'react';
-import LoginScreen from 'src/screens/authorization/LoginScreen';
+import FoodScreen from 'src/screens/main/FoodScreen';
+import DrinkScreen from 'src/screens/main/DrinkScreen';
 import AddScreen from 'src/screens/main/AddScreen';
-import MainScreen from 'src/screens/main/MainScreen';
 
-import {
-  BottomTabParamList,
-} from 'src/navigation/types';
+import {BottomTabParamList} from 'src/navigation/types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -22,7 +20,7 @@ export default function BottomTabNavigator() {
       tabBarOptions={{activeTintColor: colors.primary}}>
       <BottomTab.Screen
         name={Screens.FOOD}
-        component={MainScreen}
+        component={FoodScreen}
         options={{
           tabBarIcon: ({color}) => (
             <TabBarIcon name="food-apple" color={color} />
@@ -31,7 +29,7 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name={Screens.DRINK}
-        component={LoginScreen}
+        component={DrinkScreen}
         options={{
           tabBarIcon: ({color}) => (
             <TabBarIcon name="cup-water" color={color} />

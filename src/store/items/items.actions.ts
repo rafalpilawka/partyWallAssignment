@@ -62,7 +62,7 @@ export const removeItemAction = (
   id: string,
   variant: string,
 ): ActionPayload<{id: string; variant: string}> => ({
-  type: UPDATE_ITEM.saga,
+  type: REMOVE_ITEM.saga,
   payload: {
     id,
     variant,

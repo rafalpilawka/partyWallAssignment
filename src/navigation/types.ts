@@ -11,14 +11,6 @@ export type BottomTabParamList = {
   [Screens.ADD]: undefined;
 };
 
-export type TabOneParamList = {
-  TabOneScreen: undefined;
-};
-
-export type TabTwoParamList = {
-  TabTwoScreen: undefined;
-};
-
 export type AuthStackParamList = {
   [Screens.LOGIN]: undefined;
   [Screens.REGISTER]: undefined;

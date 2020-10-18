@@ -1,5 +1,5 @@
 import type {Action, ActionPayload} from 'src/store/reduxAction.types';
-import {LOGIN, LOGOUT, SETUP_USER} from 'src/store/user/user.actions';
+import {LOGIN, LOGOUT, REGISTER, SETUP_USER} from 'src/store/user/user.actions';
 
 export type ReduxState = {
   loading: boolean;
@@ -38,6 +38,7 @@ export default (
         errors: action.payload,
       };
     }
+    case REGISTER.pending:
     case LOGIN.pending: {
       return {
         ...state,
@@ -51,6 +52,8 @@ export default (
         user: action.payload,
       };
     }
+    case REGISTER.rejected:
+    case REGISTER.resolved:
     case LOGIN.rejected: {
       return {
         ...state,
