@@ -17,12 +17,12 @@ import {styles} from './styles';
 
 const AddScreen = (): ReactElement => {
   const {uid} = useSelector(selectUser);
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState('');
   const [name, setName] = useState('');
   const [type, setType] = useState('');
   const [variant, setVariant] = useState<TVariant>('food');
   const [description, setDescription] = useState('');
-  const [volume, setVolume] = useState(0);
+  const [volume, setVolume] = useState('');
   const [weight, setWeight] = useState('');
   const [visible, setVisible] = useState(false);
 
@@ -41,10 +41,9 @@ const AddScreen = (): ReactElement => {
   const _addHandler = (): void => {
     const itemData = {
       name,
-      price,
+      price: +price,
       type,
     };
-    debugger;
     if (variant === 'food') {
       InputValidators.addFoodItemScheme
         .validate(itemData)
@@ -70,7 +69,7 @@ const AddScreen = (): ReactElement => {
               ...itemData,
               variant,
               createdBy: uid,
-              volume,
+              volume: +volume,
             }),
           );
         })
@@ -101,8 +100,8 @@ const AddScreen = (): ReactElement => {
     ) : (
       <TextInput
         label="Volume"
-        value={volume.toString()}
-        onChangeText={(text) => setVolume(+text)}
+        value={volume}
+        onChangeText={(text) => setVolume(text)}
         mode="outlined"
         style={styles.button}
         keyboardType="decimal-pad"
@@ -159,7 +158,7 @@ const AddScreen = (): ReactElement => {
             <TextInput
               label="Price"
               value={price.toString()}
-              onChangeText={(text) => setPrice(+text)}
+              onChangeText={(text) => setPrice(text)}
               mode="outlined"
               style={styles.button}
               textContentType="password"

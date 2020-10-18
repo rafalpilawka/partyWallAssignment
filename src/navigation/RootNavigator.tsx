@@ -8,6 +8,7 @@ import {RootStackParamList} from 'src/navigation/types';
 import BottomTabNavigator from 'src/navigation/BottomTabNavigator';
 import LinkingConfiguration from 'src/config/LinkingConfiguration';
 import AuthStack from 'src/navigation/AuthorizationStack';
+import {selectLoading} from 'src/store/items/items.selector';
 import {selectLoginLoading, selectUser} from 'src/store/user/user.selector';
 
 const Navigation = (): ReactElement => {
@@ -21,7 +22,9 @@ const Navigation = (): ReactElement => {
 const Stack = createStackNavigator<RootStackParamList>();
 
 const RootNavigator = (): ReactElement => {
-  const loading = useSelector(selectLoginLoading);
+  //TODO ADD LOCAL LOADERS
+  const loadingAuth = useSelector(selectLoginLoading);
+  const loadingItems = useSelector(selectLoading);
   const user = useSelector(selectUser);
   return (
     <>
@@ -32,7 +35,7 @@ const RootNavigator = (): ReactElement => {
           <Stack.Screen name={Screens.HOME} component={BottomTabNavigator} />
         )}
       </Stack.Navigator>
-      {loading && <ActivityOverlayComponent />}
+      {loadingAuth || (loadingItems && <ActivityOverlayComponent />)}
     </>
   );
 };
