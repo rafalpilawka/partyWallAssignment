@@ -33,7 +33,6 @@ const ListComponent = ({list, variant}: TProps): ReactElement => {
   };
 
   const _handleEditItem = (item: IDrink | IFood) => {
-    console.log(modalVisible, item);
     setSelectedItem(item);
     _toggleEditModal();
   };
@@ -43,7 +42,6 @@ const ListComponent = ({list, variant}: TProps): ReactElement => {
     setModalVisible(false);
     setSelectedItem(null);
   };
-
   const _renderItems = () =>
     (list as Array<any>).map((item: IDrink | IFood) => (
       <ItemComponent

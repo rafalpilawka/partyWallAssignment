@@ -15,11 +15,14 @@ type TProps = {
   variant: TVariant;
 };
 
+//TODO ADD CALLBACKS FROM SAGA
+//TODO ADD DISMISS ON MODAL OUTSIDE CONTAINER
+
 const EditModalComponent = ({visible, onDismiss, item, variant}: TProps) => {
   const {uid} = useSelector(selectUser);
-  const [price, setPrice] = useState(item.price);
+  const [price, setPrice] = useState(item.price.toString());
   const [name, setName] = useState(item.name);
-  const [type, setType] = useState(item.name);
+  const [type, setType] = useState(item.type);
   const [description, setDescription] = useState((item as IFood).description);
   const [volume, setVolume] = useState((item as IDrink).volume);
   const [weight, setWeight] = useState((item as IFood).weight);
@@ -29,7 +32,7 @@ const EditModalComponent = ({visible, onDismiss, item, variant}: TProps) => {
   const _submitHandler = (): void => {
     const itemData = {
       name,
-      price,
+      price: +price,
       type,
     };
     debugger;
@@ -47,6 +50,7 @@ const EditModalComponent = ({visible, onDismiss, item, variant}: TProps) => {
               id: item.id,
             }),
           );
+          onDismiss();
         })
         .catch((err) => setErrors(err));
     }
@@ -63,8 +67,9 @@ const EditModalComponent = ({visible, onDismiss, item, variant}: TProps) => {
               id: item.id,
             }),
           );
+          onDismiss();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.warn(err));
     }
   };
 
@@ -128,7 +133,7 @@ const EditModalComponent = ({visible, onDismiss, item, variant}: TProps) => {
           <TextInput
             label="Price"
             value={price.toString()}
-            onChangeText={(text) => setPrice(+text)}
+            onChangeText={(text) => setPrice(text)}
             mode="outlined"
             style={styles.button}
             textContentType="password"

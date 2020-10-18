@@ -49,7 +49,6 @@ export default (
       return {
         ...state,
         loading: false,
-        user: action.payload,
       };
     }
     case REGISTER.rejected:

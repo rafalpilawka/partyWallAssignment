@@ -16,7 +16,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {styles} from './styles';
 
 const AddScreen = (): ReactElement => {
-  const {uid} = useSelector(selectUser);
+  const user = useSelector(selectUser);
   const [price, setPrice] = useState('');
   const [name, setName] = useState('');
   const [type, setType] = useState('');
@@ -25,7 +25,7 @@ const AddScreen = (): ReactElement => {
   const [volume, setVolume] = useState('');
   const [weight, setWeight] = useState('');
   const [visible, setVisible] = useState(false);
-
+  const uid = user?.uid;
   const [errors, setErrors] = React.useState(null);
   const dispatch = useDispatch();
 
@@ -57,6 +57,7 @@ const AddScreen = (): ReactElement => {
               weight: +weight,
             }),
           );
+          _clearValues();
         })
         .catch((err) => setErrors(err));
     }
@@ -72,9 +73,21 @@ const AddScreen = (): ReactElement => {
               volume: +volume,
             }),
           );
+          _clearValues();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.warn(err));
     }
+  };
+  //TODO LATER ON MOVE ALL STATES TO FORMIK AND ADD CLEAR FORM HANDLER TO SAGA - AFTER SUBMITTING AND 200 CLEAR VALUES
+  const _clearValues = (): void => {
+    setPrice('');
+    setName('');
+    setType('');
+    setVariant('food');
+    setDescription('');
+    setVolume('');
+    setWeight('');
+    setVisible(false);
   };
 
   const _renderVariant = () =>
@@ -85,7 +98,7 @@ const AddScreen = (): ReactElement => {
           value={description}
           onChangeText={(text) => setDescription(text)}
           mode="outlined"
-          style={styles.button}
+          style={styles.input}
           multiline
         />
         <TextInput
@@ -93,7 +106,7 @@ const AddScreen = (): ReactElement => {
           value={weight}
           onChangeText={(text) => setWeight(text)}
           mode="outlined"
-          style={styles.button}
+          style={styles.input}
           keyboardType="decimal-pad"
         />
       </>
@@ -103,7 +116,7 @@ const AddScreen = (): ReactElement => {
         value={volume}
         onChangeText={(text) => setVolume(text)}
         mode="outlined"
-        style={styles.button}
+        style={styles.input}
         keyboardType="decimal-pad"
       />
     );
@@ -128,7 +141,7 @@ const AddScreen = (): ReactElement => {
                     label="Main type"
                     value={variant}
                     disabled
-                    style={styles.button}
+                    style={styles.input}
                     textContentType="emailAddress"
                   />
                 </Pressable>
@@ -145,14 +158,14 @@ const AddScreen = (): ReactElement => {
               value={name}
               onChangeText={(text) => setName(text)}
               mode="outlined"
-              style={styles.button}
+              style={styles.input}
             />
             <TextInput
               label="Type"
               value={type}
               onChangeText={(text) => setType(text)}
               mode="outlined"
-              style={styles.button}
+              style={styles.input}
             />
             {_renderVariant()}
             <TextInput
@@ -160,7 +173,7 @@ const AddScreen = (): ReactElement => {
               value={price.toString()}
               onChangeText={(text) => setPrice(text)}
               mode="outlined"
-              style={styles.button}
+              style={styles.input}
               textContentType="password"
               keyboardType="decimal-pad"
               onSubmitEditing={_addHandler}

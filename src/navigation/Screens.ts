@@ -9,4 +9,3 @@ enum Screens {
 }
 
 export default Screens;
-export type ScreensType = keyof typeof Screens;

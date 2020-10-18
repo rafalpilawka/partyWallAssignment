@@ -8,23 +8,24 @@ import ListComponent from 'src/components/List/List';
 import {Variants} from 'src/constants/variants';
 import {getCollectionAction} from 'src/store/items/items.actions';
 import {selectFood} from 'src/store/items/items.selector';
-import {logoutAction} from 'src/store/user/user.actions';
 import {styles} from './styles';
 
-const FoodScreen = (): ReactElement => {
+const FoodScreen = ({navigation}: any): ReactElement => {
   const list = useSelector(selectFood);
   const dispatch = useDispatch();
 
-  const _logoutHandler = () => dispatch(logoutAction());
+  const _toggleDrawer = () => navigation.toggleDrawer();
 
   useEffect(() => {
     dispatch(getCollectionAction(Variants.FOOD));
   }, []);
 
+  //TODO ADD REFRESHING ON FOCUS
+
   return (
     <SafeAreaView style={styles.container}>
-      <Pressable onPress={_logoutHandler}>
-        <Avatar.Text size={60} label="XD" />
+      <Pressable onPress={_toggleDrawer}>
+        <Avatar.Icon size={40} icon={'account-circle-outline'} />
         {list.length ? (
           <ListComponent list={list} variant={Variants.FOOD} />
         ) : (

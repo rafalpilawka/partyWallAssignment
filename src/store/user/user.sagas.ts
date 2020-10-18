@@ -17,6 +17,7 @@ import {
   setupUserResolved,
   setupUserRejected,
   setupUserPending,
+  setupUserAction,
 } from 'src/store/user/user.actions';
 import {IUserRegisterData, TCredentials} from 'src/store/user/user.types';
 import {
@@ -49,9 +50,9 @@ export function* loginUserSaga({
   try {
     yield put(loginPending());
     const response: any = yield call(loginUserApi, payload);
-    const {uid} = response!.user;
-    yield call(setUserSaga, uid);
-    yield put(loginResolved(payload));
+    const {uid, email} = response!.user;
+    yield put(setupUserAction(uid, email));
+    yield put(loginResolved());
   } catch (e) {
     yield put(loginRejected());
   }

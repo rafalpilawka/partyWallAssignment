@@ -17,11 +17,11 @@ const DrinkScreen = (): ReactElement => {
   }, []);
 
   //TODO ADD FORMIK VALIDATION FOR YUP SCHEME AND CONVERT LOCAL STATES TO USE REDUCER
-
+  //TODO ADD REFRESHING ON FOCUS
   return (
     <SafeAreaView style={styles.container}>
       {list.length ? (
-        <ListComponent list={list} variant={Variants.FOOD} />
+        <ListComponent list={list} variant={Variants.DRINK} />
       ) : (
         <>
           <Text>THIS LIST IS EMPTY RIGHT NOW</Text>

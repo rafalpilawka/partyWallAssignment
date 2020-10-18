@@ -4,7 +4,7 @@ import {List} from 'react-native-paper';
 import {useSelector} from 'react-redux';
 import {styles} from 'src/components/Item/styles';
 import {IDrink, IFood, TVariant} from 'src/store/items/items.types';
-import {selectUserId} from 'src/store/user/user.selector';
+import {selectUser} from 'src/store/user/user.selector';
 
 type TProps = {
   item: IFood | IDrink;
@@ -12,6 +12,7 @@ type TProps = {
   handleRemoveItem(id: string): void;
   handleEditItem(item: IFood | IDrink): void;
 };
+
 const ItemComponent = ({
   item,
   variant,
@@ -19,11 +20,12 @@ const ItemComponent = ({
   handleEditItem,
 }: TProps): ReactElement => {
   const [expanded, setExpanded] = React.useState(false);
-  const userId = useSelector(selectUserId);
+  const user = useSelector(selectUser);
+  const uid = user?.uid;
   const _generateHeader =
     variant === 'food'
-      ? `${item.type}  /  $ ${item.type}  /  ${(item as IFood).weight}g`
-      : `${item.type}  /  $ ${item.type} / ${(item as IDrink).volume}ml`;
+      ? `${item.type}  /  $ ${item.price}  /  ${(item as IFood).weight}g`
+      : `${item.type}  /  $ ${item.price} / ${(item as IDrink).volume}ml`;
   const _handlePress = () => setExpanded((prev) => !prev);
   const _handleRemove = () => item.id && handleRemoveItem(item.id);
   const _handleEdit = () => item.id && handleEditItem(item);
@@ -38,9 +40,11 @@ const ItemComponent = ({
             <List.Icon {...props} style icon="book-open-outline" />
           )}
         />
-        {item.createdBy === userId && _renderDeleteSelection()}
+        {item.createdBy === uid && _renderDeleteSelection()}
       </>
-    ) : null;
+    ) : (
+      _renderDeleteSelection()
+    );
 
   const _renderDeleteSelection = () => (
     <>

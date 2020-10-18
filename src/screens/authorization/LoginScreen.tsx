@@ -40,6 +40,7 @@ export default function ({navigation}: any): ReactElement {
             mode="outlined"
             secureTextEntry={true}
             style={styles.button}
+            onSubmitEditing={_loginAction}
           />
           <View style={styles.buttonsContainer}>
             <Button icon="login" compact onPress={_loginAction}>

@@ -18,7 +18,8 @@ export const registerUserApi = async (
     credentials.password,
   );
 
-export const logoutUserApi = async (): Promise<any> => auth.signOut();
+export const logoutUserApi = (): Promise<any> => auth.signOut();
+
 export const createProfileApi = async (
   id: string,
   name: string,
