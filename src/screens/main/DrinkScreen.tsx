@@ -17,7 +17,7 @@ const DrinkScreen = (): ReactElement => {
   }, []);
 
   //TODO ADD FORMIK VALIDATION FOR YUP SCHEME AND CONVERT LOCAL STATES TO USE REDUCER
-
+  //TODO ADD REFRESHING ON FOCUS
   return (
     <SafeAreaView style={styles.container}>
       {list.length ? (

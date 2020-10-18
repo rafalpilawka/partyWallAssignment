@@ -33,7 +33,6 @@ const ListComponent = ({list, variant}: TProps): ReactElement => {
   };
 
   const _handleEditItem = (item: IDrink | IFood) => {
-    console.log(modalVisible, item);
     setSelectedItem(item);
     _toggleEditModal();
   };

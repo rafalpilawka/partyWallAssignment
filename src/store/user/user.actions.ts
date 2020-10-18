@@ -41,9 +41,8 @@ export const loginAction = (
 export const loginPending = (): Action => ({
   type: LOGIN.pending,
 });
-export const loginResolved = (data: TUserData): ActionPayload<TUserData> => ({
+export const loginResolved = (): Action => ({
   type: LOGIN.resolved,
-  payload: data,
 });
 export const loginRejected = (): Action => ({
   type: LOGIN.rejected,

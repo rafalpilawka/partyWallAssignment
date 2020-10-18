@@ -10,9 +10,9 @@ export const styles = StyleSheet.create({
     paddingHorizontal: '5%',
     width: '90%',
   },
-  button: {
+  input: {
     height: 56,
-    marginBottom: 8,
+    marginBottom: 10,
   },
   buttonsContentStyle: {
     flex: 1,
@@ -23,11 +23,7 @@ export const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
-  input: {
-    flexDirection: 'row',
-    width: '70',
-    flex: 1,
-  },
+
   buttonContainer: {
     marginTop: 15,
   },

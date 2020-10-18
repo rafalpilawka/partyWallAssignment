@@ -69,10 +69,9 @@ const EditModalComponent = ({visible, onDismiss, item, variant}: TProps) => {
           );
           onDismiss();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.warn(err));
     }
   };
-  console.log(variant);
 
   const _renderVariant = () =>
     variant === 'food' ? (

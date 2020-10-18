@@ -11,6 +11,7 @@ import {auth} from 'src/utils/services/api/firebase';
 import store from 'src/store/rootStore';
 
 //TODO IMPLEMENT DARK LIGHT THEME
+//TODO ADD IMPLEMENTATION FOr GLOBAL STYLES WITH FONT SIZES AND OTHER PROPS
 
 const theme = {
   ...DefaultTheme,
@@ -26,7 +27,7 @@ export default function App() {
   const isLoadingComplete = useCachedResources();
 
   useEffect(() => {
-    auth.onAuthStateChanged(async (res: User | null) => {
+    auth.onAuthStateChanged(async (res: any) => {
       if (res) {
         const {uid, email}: User = res;
         store.dispatch(setupUserAction(uid, email!));
