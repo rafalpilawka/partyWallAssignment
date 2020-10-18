@@ -57,6 +57,7 @@ const AddScreen = (): ReactElement => {
               weight: +weight,
             }),
           );
+          _clearValues();
         })
         .catch((err) => setErrors(err));
     }
@@ -72,9 +73,21 @@ const AddScreen = (): ReactElement => {
               volume: +volume,
             }),
           );
+          _clearValues();
         })
         .catch((err) => console.log(err));
     }
+  };
+  //TODO LATER ON MOVE ALL STATES TO FORMIK AND ADD CLEAR FORM HANDLER TO SAGA - AFTER SUBMITTING AND 200 CLEAR VALUES
+  const _clearValues = (): void => {
+    setPrice('');
+    setName('');
+    setType('');
+    setVariant('food');
+    setDescription('');
+    setVolume('');
+    setWeight('');
+    setVisible(false);
   };
 
   const _renderVariant = () =>

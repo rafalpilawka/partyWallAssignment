@@ -20,10 +20,11 @@ const ItemComponent = ({
 }: TProps): ReactElement => {
   const [expanded, setExpanded] = React.useState(false);
   const userId = useSelector(selectUserId);
+  console.log(item, variant);
   const _generateHeader =
     variant === 'food'
-      ? `${item.type}  /  $ ${item.type}  /  ${(item as IFood).weight}g`
-      : `${item.type}  /  $ ${item.type} / ${(item as IDrink).volume}ml`;
+      ? `${item.type}  /  $ ${item.price}  /  ${(item as IFood).weight}g`
+      : `${item.type}  /  $ ${item.price} / ${(item as IDrink).volume}ml`;
   const _handlePress = () => setExpanded((prev) => !prev);
   const _handleRemove = () => item.id && handleRemoveItem(item.id);
   const _handleEdit = () => item.id && handleEditItem(item);
@@ -40,7 +41,9 @@ const ItemComponent = ({
         />
         {item.createdBy === userId && _renderDeleteSelection()}
       </>
-    ) : null;
+    ) : (
+      _renderDeleteSelection()
+    );
 
   const _renderDeleteSelection = () => (
     <>

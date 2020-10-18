@@ -21,7 +21,7 @@ const DrinkScreen = (): ReactElement => {
   return (
     <SafeAreaView style={styles.container}>
       {list.length ? (
-        <ListComponent list={list} variant={Variants.FOOD} />
+        <ListComponent list={list} variant={Variants.DRINK} />
       ) : (
         <>
           <Text>THIS LIST IS EMPTY RIGHT NOW</Text>
