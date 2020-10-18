@@ -28,7 +28,7 @@ export default (
       return {
         ...state,
         loading: false,
-        user: action.payload,
+        user: {...state.user, ...action.payload},
       };
     }
     case SETUP_USER.rejected: {

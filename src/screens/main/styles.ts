@@ -4,7 +4,11 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 15,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
+  },
+  menu: {
+    paddingHorizontal: '5%',
+    width: '90%',
   },
   button: {
     height: 56,
@@ -13,11 +17,6 @@ export const styles = StyleSheet.create({
   buttonsContentStyle: {
     flex: 1,
     width: 56,
-  },
-  buttonsContainer: {
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-between',
   },
   separator: {
     marginVertical: 30,
@@ -28,5 +27,11 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '70',
     flex: 1,
+  },
+  buttonContainer: {
+    marginTop: 15,
+  },
+  buttonFont: {
+    fontSize: 20,
   },
 });

@@ -1,100 +1,173 @@
-import React, {ReactElement} from 'react';
-import {View} from 'react-native';
-import {Button, TextInput, Text} from 'react-native-paper';
-import {registerAction} from 'src/store/user/user.actions';
+import React, {ReactElement, useState} from 'react';
+import {Pressable, ScrollView} from 'react-native';
+import {Button, TextInput, Text, Menu} from 'react-native-paper';
+import {addItemAction} from 'src/store/items/items.actions';
+import {TVariant} from 'src/store/items/items.types';
+import {selectUser} from 'src/store/user/user.selector';
 import {InputValidators} from 'src/utils/helpers/validators';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {styles} from './styles';
 
-const AddScreen = ({navigation}: any): ReactElement => {
-  const [email, setEmail] = React.useState('');
-  const [name, setName] = React.useState('');
-  const [surname, setSurname] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [passwordConfirmation, setConfirmation] = React.useState('');
+const AddScreen = (): ReactElement => {
+  const {uid} = useSelector(selectUser);
+  const [price, setPrice] = useState(0);
+  const [name, setName] = useState('');
+  const [type, setType] = useState('');
+  const [variant, setVariant] = useState<TVariant>('food');
+  const [description, setDescription] = useState('');
+  const [volume, setVolume] = useState(0);
+  const [weight, setWeight] = useState('');
+  const [visible, setVisible] = useState(false);
+
   const [errors, setErrors] = React.useState(null);
   const dispatch = useDispatch();
 
   //TODO ADD FORMIK VALIDATION FOR YUP SCHEME AND CONVERT LOCAL STATES TO USE REDUCER
 
-  const _navigationHandler = (): void => navigation.goBack();
-  const _registerHandler = (): void => {
-    const registerData = {
-      email,
-      name,
-      surname,
-      password,
-      passwordConfirmation,
-    };
-    InputValidators.register
-      .validate(registerData)
-      .then((_) => {
-        dispatch(registerAction(registerData));
-      })
-      .catch((err) => setErrors(err));
+  const _toggleMenu = () => {
+    setVisible((prev) => !prev);
   };
+  const _setVariant = (variant: TVariant): void => {
+    setVariant(variant);
+    _toggleMenu();
+  };
+  const _addHandler = (): void => {
+    const itemData = {
+      name,
+      price,
+      type,
+    };
+    debugger;
+    if (variant === 'food') {
+      InputValidators.addFoodItemScheme
+        .validate(itemData)
+        .then((_) => {
+          dispatch(
+            addItemAction({
+              ...itemData,
+              variant,
+              createdBy: uid,
+              description,
+              weight: +weight,
+            }),
+          );
+        })
+        .catch((err) => setErrors(err));
+    }
+    if (variant === 'drink') {
+      InputValidators.addDrinkItemScheme
+        .validate(itemData)
+        .then((_) => {
+          dispatch(
+            addItemAction({
+              ...itemData,
+              variant,
+              createdBy: uid,
+              volume,
+            }),
+          );
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const _renderVariant = () =>
+    variant === 'food' ? (
+      <>
+        <TextInput
+          label="Description"
+          value={description}
+          onChangeText={(text) => setDescription(text)}
+          mode="outlined"
+          style={styles.button}
+          multiline
+        />
+        <TextInput
+          label="Weight"
+          value={weight}
+          onChangeText={(text) => setWeight(text)}
+          mode="outlined"
+          style={styles.button}
+          keyboardType="numeric"
+        />
+      </>
+    ) : (
+      <TextInput
+        label="Volume"
+        value={volume.toString()}
+        onChangeText={(text) => setVolume(+text)}
+        mode="outlined"
+        style={styles.button}
+        keyboardType="numeric"
+      />
+    );
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
+      <ScrollView>
+        <Menu
+          style={[styles.menu]}
+          visible={visible}
+          onDismiss={_toggleMenu}
+          anchor={
+            <Pressable onPress={_toggleMenu}>
+              <TextInput
+                pointerEvents={'none'}
+                label="Main type"
+                value={variant}
+                disabled
+                style={styles.button}
+                textContentType="emailAddress"
+              />
+            </Pressable>
+          }>
+          <Menu.Item
+            onPress={() => _setVariant('food')}
+            title="Food"
+            style={{width: '100%'}}
+          />
+          <Menu.Item onPress={() => _setVariant('drink')} title="Drink" />
+        </Menu>
         <TextInput
-          label="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          mode="outlined"
-          style={styles.button}
-          textContentType="emailAddress"
-        />
-        <TextInput
-          label="Name"
+          label="Item name"
           value={name}
           onChangeText={(text) => setName(text)}
           mode="outlined"
           style={styles.button}
-          textContentType="name"
         />
         <TextInput
-          label="Surname"
-          value={surname}
-          onChangeText={(text) => setSurname(text)}
+          label="Type"
+          value={type}
+          onChangeText={(text) => setType(text)}
           mode="outlined"
           style={styles.button}
-          textContentType="name"
         />
+        {_renderVariant()}
         <TextInput
-          label="Password"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
+          label="Price"
+          value={price.toString()}
+          onChangeText={(text) => setPrice(+text)}
           mode="outlined"
-          secureTextEntry={true}
           style={styles.button}
           textContentType="password"
+          keyboardType="numeric"
+          onSubmitEditing={_addHandler}
         />
-        <TextInput
-          label="Password Confirmation"
-          value={passwordConfirmation}
-          onChangeText={(text) => setConfirmation(text)}
-          mode="outlined"
-          secureTextEntry={true}
-          style={styles.button}
-          textContentType="password"
-        />
-      </View>
-      {errors && (
-        <Text style={{color: 'red'}}>
-          There are some problems with form , please check it out
-        </Text>
-      )}
-
-      <View style={styles.buttonsContainer}>
-        <Button icon="login" compact onPress={_navigationHandler}>
-          Login
+        {errors && (
+          <Text style={{color: 'red'}}>
+            There are some problems with form , please check it out
+          </Text>
+        )}
+        <Button
+          style={styles.buttonContainer}
+          labelStyle={styles.buttonFont}
+          icon="plus-circle"
+          compact
+          onPress={_addHandler}>
+          ADD ITEM
         </Button>
-        <Button icon="account-plus-outline" compact onPress={_registerHandler}>
-          Register
-        </Button>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

@@ -1,6 +1,6 @@
 export type Action = {
   type: string;
-  payload: null
+  payload?: null;
 };
 
 export type ActionPayload<T> = {
@@ -12,10 +12,4 @@ export type AsyncTypes = {
   resolved: string;
   rejected: string;
   saga: string;
-};
-
-export type MetaT = {
-  currentPage: number;
-  maxPage: number;
-  total: number;
 };
