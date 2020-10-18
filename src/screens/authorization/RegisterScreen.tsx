@@ -18,7 +18,7 @@ export default function ({navigation}: any): ReactElement {
 
   //TODO ADD FORMIK VALIDATION FOR YUP SCHEME AND CONVERT LOCAL STATES TO USE REDUCER
 
-  const _navigationHandler = (): void => navigation.navigate(Screens.LOGIN);
+  const _navigationHandler = (): void => navigation.goBack();
   const _registerHandler = (): void => {
     const registerData = {
       email,

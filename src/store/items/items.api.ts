@@ -5,7 +5,13 @@ export const getCollectionApi = async (
   variant: string,
 ): Promise<Array<IFood | IDrink>> => {
   const snapshot = await firestore.collection(`${variant}`).get();
-  return snapshot.docs.map((doc) => doc.data()) as Array<IFood | IDrink>;
+  return snapshot.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      ...data,
+    };
+  }) as Array<IFood | IDrink>;
 };
 
 export const createItemApi = async ({

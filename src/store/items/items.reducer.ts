@@ -43,10 +43,10 @@ export default (
       };
     }
     case GET_COLLECTION.resolved: {
-      const variant = action.payload.variant;
+      const {variant, list} = action.payload;
       return {
         ...state,
-        [variant]: action.payload,
+        [variant]: list,
         loading: false,
       };
     }
