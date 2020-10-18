@@ -1,7 +1,8 @@
-import React, {ReactElement} from 'react';
+import React, {ReactElement, useState} from 'react';
 import {Alert, ScrollView} from 'react-native';
 import {List} from 'react-native-paper';
 import {useDispatch} from 'react-redux';
+import EditModalComponent from 'src/components/EditModal/EditModal';
 import {removeItemAction} from 'src/store/items/items.actions';
 import {IDrink, IFood, TVariant} from 'src/store/items/items.types';
 import ItemComponent from 'src/components/Item/Item';
@@ -11,6 +12,8 @@ type TProps = {
   variant: TVariant;
 };
 const ListComponent = ({list, variant}: TProps): ReactElement => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<IDrink | IFood | null>(null);
   const dispatch = useDispatch();
   const _handleRemoveItem = (id: string) => {
     Alert.alert(
@@ -29,11 +32,22 @@ const ListComponent = ({list, variant}: TProps): ReactElement => {
     );
   };
 
-  const _handleEditItem = (id: string) => {};
+  const _handleEditItem = (item: IDrink | IFood) => {
+    console.log(modalVisible, item);
+    setSelectedItem(item);
+    _toggleEditModal();
+  };
+
+  const _toggleEditModal = () => setModalVisible((prev) => !prev);
+  const _handleDismissModal = () => {
+    setModalVisible(false);
+    setSelectedItem(null);
+  };
 
   const _renderItems = () =>
     (list as Array<any>).map((item: IDrink | IFood) => (
       <ItemComponent
+        key={item.id}
         item={item}
         variant={variant}
         handleRemoveItem={_handleRemoveItem}
@@ -46,6 +60,14 @@ const ListComponent = ({list, variant}: TProps): ReactElement => {
         <List.Subheader>{variant.toUpperCase()}</List.Subheader>
         {_renderItems()}
       </List.Section>
+      {selectedItem && (
+        <EditModalComponent
+          visible={modalVisible}
+          item={selectedItem}
+          onDismiss={_handleDismissModal}
+          variant={variant}
+        />
+      )}
     </ScrollView>
   );
 };

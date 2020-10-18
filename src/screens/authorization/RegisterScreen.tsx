@@ -1,5 +1,5 @@
 import React, {ReactElement} from 'react';
-import {View} from 'react-native';
+import {View, ScrollView} from 'react-native';
 import {Button, TextInput, Text} from 'react-native-paper';
 import {registerAction} from 'src/store/user/user.actions';
 import {InputValidators} from 'src/utils/helpers/validators';
@@ -37,62 +37,67 @@ export default function ({navigation}: any): ReactElement {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TextInput
-        label="Email"
-        value={email}
-        onChangeText={(text) => setEmail(text)}
-        mode="outlined"
-        style={styles.button}
-        textContentType="emailAddress"
-        autoCapitalize="none"
-      />
-      <TextInput
-        label="Name"
-        value={name}
-        onChangeText={(text) => setName(text)}
-        mode="outlined"
-        style={styles.button}
-        textContentType="name"
-      />
-      <TextInput
-        label="Surname"
-        value={surname}
-        onChangeText={(text) => setSurname(text)}
-        mode="outlined"
-        style={styles.button}
-        textContentType="name"
-      />
-      <TextInput
-        label="Password"
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-        mode="outlined"
-        secureTextEntry={true}
-        style={styles.button}
-        textContentType="password"
-      />
-      <TextInput
-        label="Password Confirmation"
-        value={passwordConfirmation}
-        onChangeText={(text) => setConfirmation(text)}
-        mode="outlined"
-        secureTextEntry={true}
-        style={styles.button}
-        textContentType="password"
-      />
-      {errors && (
-        <Text style={{color: 'red'}}>
-          There are some problems with form , please check it out
-        </Text>
-      )}
-      <View style={styles.buttonsContainer}>
-        <Button icon="login" compact onPress={_navigationHandler}>
-          Login
-        </Button>
-        <Button icon="account-plus-outline" compact onPress={_registerHandler}>
-          Register
-        </Button>
-      </View>
+      <ScrollView>
+        <TextInput
+          label="Email"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+          mode="outlined"
+          style={styles.button}
+          textContentType="emailAddress"
+          autoCapitalize="none"
+        />
+        <TextInput
+          label="Name"
+          value={name}
+          onChangeText={(text) => setName(text)}
+          mode="outlined"
+          style={styles.button}
+          textContentType="name"
+        />
+        <TextInput
+          label="Surname"
+          value={surname}
+          onChangeText={(text) => setSurname(text)}
+          mode="outlined"
+          style={styles.button}
+          textContentType="name"
+        />
+        <TextInput
+          label="Password"
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+          mode="outlined"
+          secureTextEntry={true}
+          style={styles.button}
+          textContentType="password"
+        />
+        <TextInput
+          label="Password Confirmation"
+          value={passwordConfirmation}
+          onChangeText={(text) => setConfirmation(text)}
+          mode="outlined"
+          secureTextEntry={true}
+          style={styles.button}
+          textContentType="password"
+        />
+        {errors && (
+          <Text style={{color: 'red'}}>
+            There are some problems with form , please check it out
+          </Text>
+        )}
+        <View style={styles.buttonsContainer}>
+          <Button icon="login" compact onPress={_navigationHandler}>
+            Login
+          </Button>
+          <Button
+            icon="account-plus-outline"
+            compact
+            onPress={_registerHandler}>
+            Register
+          </Button>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

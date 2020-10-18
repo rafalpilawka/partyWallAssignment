@@ -1,4 +1,5 @@
 import React, {ReactElement} from 'react';
+import {Pressable} from 'react-native';
 import {List} from 'react-native-paper';
 import {useSelector} from 'react-redux';
 import {styles} from 'src/components/Item/styles';
@@ -9,7 +10,7 @@ type TProps = {
   item: IFood | IDrink;
   variant: TVariant;
   handleRemoveItem(id: string): void;
-  handleEditItem(id: string): void;
+  handleEditItem(item: IFood | IDrink): void;
 };
 const ItemComponent = ({
   item,
@@ -25,7 +26,7 @@ const ItemComponent = ({
       : `${item.type}  /  $ ${item.type} / ${(item as IDrink).volume}ml`;
   const _handlePress = () => setExpanded((prev) => !prev);
   const _handleRemove = () => item.id && handleRemoveItem(item.id);
-  const _handleEdit = () => item.id && handleEditItem(item.id);
+  const _handleEdit = () => item.id && handleEditItem(item);
   const _variantRender = (): ReactElement | null =>
     variant === 'food' ? (
       <>
@@ -44,27 +45,23 @@ const ItemComponent = ({
   const _renderDeleteSelection = () => (
     <>
       <List.Item
-        onPress={() => console.log('UPDATE')}
         style={styles.paddingElements}
         titleStyle={styles.itemsFont}
         title={''}
         left={(props: any) => (
-          <List.Icon
-            {...props}
-            style
-            icon="square-edit-outline"
-            onPress={_handleEdit}
-            titleStyle={'Edit'}
-          />
+          <Pressable onPress={_handleEdit}>
+            <List.Icon
+              {...props}
+              style
+              icon="square-edit-outline"
+              titleStyle={'Edit'}
+            />
+          </Pressable>
         )}
         right={(props: any) => (
-          <List.Icon
-            {...props}
-            style
-            icon="delete"
-            onPress={_handleRemove}
-            title={'REMOVE'}
-          />
+          <Pressable onPress={_handleRemove}>
+            <List.Icon {...props} style icon="delete" title={'REMOVE'} />
+          </Pressable>
         )}
       />
     </>

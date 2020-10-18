@@ -2,9 +2,12 @@ import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingHorizontal: 15,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+  },
+  containerStyle: {
+    paddingHorizontal: 15,
+    flex: 1,
   },
   menu: {
     paddingHorizontal: '5%',
