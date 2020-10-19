@@ -17,16 +17,20 @@ import {
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {useDispatch, useSelector} from 'react-redux';
 import BottomTabNavigator from 'src/navigation/BottomTabNavigator';
+import Screens from 'src/navigation/Screens';
+import {DrawerStackParamList} from 'src/navigation/types';
+import EditScreen from 'src/screens/main/EditScreen';
 import {logoutAction} from 'src/store/user/user.actions';
 import {selectUser} from 'src/store/user/user.selector';
 import {styles} from 'src/navigation/styles';
 
-const DrawerStack = createDrawerNavigator();
+const DrawerStack = createDrawerNavigator<DrawerStackParamList>();
 
 export const DrawerNavigator = (): ReactElement => {
   return (
     <DrawerStack.Navigator drawerContent={() => <DrawerContent />}>
-      <DrawerStack.Screen name="Home" component={BottomTabNavigator} />
+      <DrawerStack.Screen name={Screens.HOME} component={BottomTabNavigator} />
+      <DrawerStack.Screen name={Screens.EDIT} component={EditScreen} />
     </DrawerStack.Navigator>
   );
 };

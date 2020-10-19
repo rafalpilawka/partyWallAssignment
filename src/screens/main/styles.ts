@@ -1,9 +1,10 @@
 import {StyleSheet} from 'react-native';
+import normalize from 'react-native-normalize';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 15,
+    paddingHorizontal: normalize(15),
     justifyContent: 'flex-start',
   },
   menu: {
@@ -12,22 +13,26 @@ export const styles = StyleSheet.create({
   },
   input: {
     height: 56,
-    marginBottom: 10,
+    marginBottom: normalize(10),
   },
   buttonsContentStyle: {
     flex: 1,
-    width: 56,
+    width: normalize(56),
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: normalize(30),
     height: 1,
     width: '80%',
   },
 
   buttonContainer: {
-    marginTop: 15,
+    marginTop: normalize(15),
   },
   buttonFont: {
-    fontSize: 20,
+    fontSize: normalize(25),
+  },
+  buttonsContainer: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
   },
 });

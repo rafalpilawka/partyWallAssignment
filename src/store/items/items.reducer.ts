@@ -3,6 +3,7 @@ import {
   GET_COLLECTION,
   REMOVE_ITEM,
   UPDATE_ITEM,
+  SET_ACTIVE_ITEM,
 } from 'src/store/items/items.actions';
 import {IDrink, IFood} from 'src/store/items/items.types';
 import type {Action, ActionPayload} from 'src/store/reduxAction.types';
@@ -11,16 +12,14 @@ export type ReduxState = {
   loading: boolean;
   food: IFood[];
   drink: IDrink[];
-  selectedFood: any;
-  selectedDrinks: any;
+  activeItem: {item: IDrink | IFood | null; variant: string} | null;
 };
 
 const INITIAL_STATE: ReduxState = {
   loading: false,
   food: [],
   drink: [],
-  selectedFood: null,
-  selectedDrinks: null,
+  activeItem: null,
 };
 
 export default (
@@ -62,7 +61,12 @@ export default (
         loading: false,
       };
     }
-
+    case SET_ACTIVE_ITEM: {
+      return {
+        ...state,
+        activeItem: action.payload,
+      };
+    }
     default:
       return state;
   }

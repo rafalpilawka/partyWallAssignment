@@ -1,5 +1,6 @@
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import normalize from 'react-native-normalize';
 import {useTheme} from 'react-native-paper';
 import Screens from 'src/navigation/Screens';
 import * as React from 'react';
@@ -51,6 +52,10 @@ export default function BottomTabNavigator() {
 
 function TabBarIcon(props: {name: string; color: string}) {
   return (
-    <MaterialCommunityIcons size={30} style={{marginBottom: -3}} {...props} />
+    <MaterialCommunityIcons
+      size={normalize(35)}
+      style={{marginTop: normalize(5)}}
+      {...props}
+    />
   );
 }

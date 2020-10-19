@@ -15,3 +15,8 @@ export type AuthStackParamList = {
   [Screens.LOGIN]: undefined;
   [Screens.REGISTER]: undefined;
 };
+
+export type DrawerStackParamList = {
+  [Screens.HOME]: undefined;
+  [Screens.EDIT]: undefined;
+};

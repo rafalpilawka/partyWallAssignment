@@ -77,3 +77,14 @@ export const removeItemResolved = (): Action => ({
 export const removeItemRejected = (): Action => ({
   type: REMOVE_ITEM.rejected,
 });
+
+export const SET_ACTIVE_ITEM = 'SET_ACTIVE_ITEM';
+export const setActiveItem = (
+  payload: {
+    item: null | IFood | IDrink;
+    variant: string;
+  } | null,
+): ActionPayload<{item: null | IFood | IDrink; variant: string} | null> => ({
+  type: SET_ACTIVE_ITEM,
+  payload: payload,
+});

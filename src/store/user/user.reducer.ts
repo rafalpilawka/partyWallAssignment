@@ -1,5 +1,11 @@
 import type {Action, ActionPayload} from 'src/store/reduxAction.types';
-import {LOGIN, LOGOUT, REGISTER, SETUP_USER} from 'src/store/user/user.actions';
+import {
+  LOGIN,
+  LOGOUT,
+  REGISTER,
+  SETUP_USER,
+  SWITCH_LOADER,
+} from 'src/store/user/user.actions';
 
 export type ReduxState = {
   loading: boolean;
@@ -77,6 +83,12 @@ export default (
       return {
         ...state,
         loading: false,
+      };
+    }
+    case SWITCH_LOADER: {
+      return {
+        ...state,
+        loading: action.payload,
       };
     }
     default:

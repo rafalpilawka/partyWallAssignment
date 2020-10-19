@@ -1,32 +1,27 @@
 import {StyleSheet} from 'react-native';
+import normalize from 'react-native-normalize';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 15,
+    paddingHorizontal: normalize(15),
     justifyContent: 'center',
   },
   button: {
-    height: 56,
-    marginBottom: 8,
+    height: normalize(56),
+    marginBottom: normalize(8),
   },
   buttonsContentStyle: {
     flex: 1,
-    width: 56,
+    width: normalize(80),
   },
   buttonsContainer: {
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-  input: {
-    flexDirection: 'row',
-    width: '70',
-    flex: 1,
+  flex: {flex: 1},
+  buttonFontSize: {
+    fontSize: normalize(18),
   },
 });
