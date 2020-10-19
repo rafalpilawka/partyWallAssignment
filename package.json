@@ -42,6 +42,7 @@
     "@types/react-native": "~0.63.2",
     "@types/react-redux": "^7.1.9",
     "@types/yup": "^0.29.8",
+    "jest-expo-enzyme": "^1.0.3",
     "prettier": "^2.1.2",
     "typescript": "~3.9.5"
   },
