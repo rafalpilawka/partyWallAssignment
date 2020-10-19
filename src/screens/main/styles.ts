@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
     marginTop: normalize(15),
   },
   buttonFont: {
-    fontSize: normalize(25),
+    fontSize: normalize(20),
   },
   buttonsContainer: {
     justifyContent: 'space-between',
