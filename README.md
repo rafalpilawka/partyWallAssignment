@@ -53,6 +53,8 @@ For ejected project:
     "react-native-reanimated": "~1.13.0".
 
 ### Additional features for next versions :
+- add custom header to nest into containers
+- add normalization for pixel density
 - add formik for validations adn forms 
 - profile stack for editing profile or self created items
 - unit and e2e tests with react native testing library / enzyme  and detox

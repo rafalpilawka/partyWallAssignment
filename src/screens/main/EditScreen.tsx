@@ -1,78 +1,84 @@
 import React, {ReactElement, useEffect, useState} from 'react';
-import {Keyboard, Pressable, ScrollView, View} from 'react-native';
-import {Button, TextInput, Text, Menu} from 'react-native-paper';
-import {useIsFocused} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
+import {ScrollView, Text, View} from 'react-native';
+import {Button, TextInput} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useDispatch, useSelector} from 'react-redux';
+import {goBack, resetParams} from 'src/navigation/topLevelNavigator';
 import {Form} from 'src/components/Form/Form';
-import {addItemAction} from 'src/store/items/items.actions';
-import {TVariant} from 'src/store/items/items.types';
+import {setActiveItem, updateItemAction} from 'src/store/items/items.actions';
+import {selectActiveItem} from 'src/store/items/items.selector';
+import {IDrink, IFood} from 'src/store/items/items.types';
 import {selectUser} from 'src/store/user/user.selector';
 import {InputValidators} from 'src/utils/helpers/validators';
-import {styles} from './styles';
+import {styles} from 'src/screens/main/styles';
 
-const AddScreen = (): ReactElement => {
-  const user = useSelector(selectUser);
+//TODO ADD CALLBACKS FROM SAGA
+//TODO ADD DISMISS ON MODAL OUTSIDE CONTAINER
+// type Props = {route: RouteType<any>};
+
+const EditScreen = (): ReactElement => {
+  const res = useSelector(selectActiveItem);
+  const {uid} = useSelector(selectUser);
   const [price, setPrice] = useState('');
   const [name, setName] = useState('');
   const [type, setType] = useState('');
-  const [variant, setVariant] = useState<TVariant>('food');
   const [description, setDescription] = useState('');
   const [volume, setVolume] = useState('');
   const [weight, setWeight] = useState('');
-  const [visible, setVisible] = useState(false);
-  const uid = user?.uid;
   const [errors, setErrors] = React.useState(null);
+  const [variant, setVariant] = useState('');
+  const [itemID, setItemID] = useState('');
   const dispatch = useDispatch();
-  const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (!isFocused) {
-      _clearForm();
-      Keyboard.dismiss();
+    if (res) {
+      const {variant: V, item} = res;
+      setVariant(V);
+      if (item) {
+        setPrice(item.price.toString());
+        setName(item.name);
+        setType(item.type);
+        setDescription(
+          (item as IFood)?.description ? (item as IFood)?.description : '',
+        );
+        setVolume(
+          (item as IDrink).volume ? (item as IDrink)?.volume.toString() : '',
+        );
+        setWeight(
+          (item as IFood).weight ? (item as IFood).weight.toString() : '',
+        );
+        setItemID(item.id ? item.id : '');
+      }
     }
-  }, [isFocused]);
+  }, [res]);
 
-  const _clearForm = () => {
-    setPrice('');
-    setName('');
-    setType('');
-    setDescription('');
-    setVolume('');
-    setWeight('');
-    setVisible(false);
-    setErrors(null);
+  const _dismissHandler = () => {
+    resetParams();
+    dispatch(setActiveItem(null));
+    goBack();
   };
-
-  //TODO ADD FORMIK VALIDATION FOR YUP SCHEME AND CONVERT LOCAL STATES TO USE REDUCER
-
-  const _toggleMenu = () => {
-    setVisible((prev) => !prev);
-  };
-  const _setVariant = (variant: TVariant): void => {
-    setVariant(variant);
-    _toggleMenu();
-  };
-  const _addHandler = (): void => {
+  const _submitHandler = (): void => {
     const itemData = {
       name,
       price: +price,
       type,
     };
+    debugger;
     if (variant === 'food') {
       InputValidators.addFoodItemScheme
         .validate(itemData)
         .then((_) => {
           dispatch(
-            addItemAction({
+            updateItemAction({
               ...itemData,
               variant,
-              createdBy: uid,
               description,
+              createdBy: uid,
               weight: +weight,
+              id: itemID,
             }),
           );
-          _clearValues();
+          _dismissHandler();
         })
         .catch((err) => setErrors(err));
     }
@@ -81,28 +87,18 @@ const AddScreen = (): ReactElement => {
         .validate(itemData)
         .then((_) => {
           dispatch(
-            addItemAction({
+            updateItemAction({
               ...itemData,
               variant,
-              createdBy: uid,
               volume: +volume,
+              createdBy: uid,
+              id: itemID,
             }),
           );
-          _clearValues();
+          _dismissHandler();
         })
         .catch((err) => console.warn(err));
     }
-  };
-  //TODO LATER ON MOVE ALL STATES TO FORMIK AND ADD CLEAR FORM HANDLER TO SAGA - AFTER SUBMITTING AND 200 CLEAR VALUES
-  const _clearValues = (): void => {
-    setPrice('');
-    setName('');
-    setType('');
-    setVariant('food');
-    setDescription('');
-    setVolume('');
-    setWeight('');
-    setVisible(false);
   };
 
   const _renderVariant = () =>
@@ -118,52 +114,36 @@ const AddScreen = (): ReactElement => {
         />
         <TextInput
           label="Weight"
-          value={weight}
+          value={weight.toString()}
           onChangeText={(text) => setWeight(text)}
           mode="outlined"
           style={styles.input}
-          keyboardType="decimal-pad"
+          keyboardType="numeric"
         />
       </>
     ) : (
       <TextInput
         label="Volume"
-        value={volume}
+        value={volume.toString()}
         onChangeText={(text) => setVolume(text)}
         mode="outlined"
         style={styles.input}
-        keyboardType="decimal-pad"
+        keyboardType="numeric"
       />
     );
 
-  return (
+  return res ? (
     <Form>
       <SafeAreaView style={styles.container}>
         <View style={{flex: 1}}>
           <ScrollView>
-            <Menu
-              style={[styles.menu]}
-              visible={visible}
-              onDismiss={_toggleMenu}
-              anchor={
-                <Pressable onPress={_toggleMenu}>
-                  <TextInput
-                    pointerEvents={'none'}
-                    label="Main type"
-                    value={variant}
-                    disabled
-                    style={styles.input}
-                    textContentType="emailAddress"
-                  />
-                </Pressable>
-              }>
-              <Menu.Item
-                onPress={() => _setVariant('food')}
-                title="Food"
-                style={{width: '100%'}}
-              />
-              <Menu.Item onPress={() => _setVariant('drink')} title="Drink" />
-            </Menu>
+            <TextInput
+              pointerEvents={'none'}
+              label="Main type"
+              value={variant}
+              disabled
+              style={styles.input}
+            />
             <TextInput
               label="Item name"
               value={name}
@@ -186,27 +166,38 @@ const AddScreen = (): ReactElement => {
               mode="outlined"
               style={styles.input}
               textContentType="password"
-              keyboardType="decimal-pad"
-              onSubmitEditing={_addHandler}
+              keyboardType="numeric"
+              onSubmitEditing={_submitHandler}
             />
             {errors && (
               <Text style={{color: 'red'}}>
                 There are some problems with form , please check it out
               </Text>
             )}
-            <Button
-              style={styles.buttonContainer}
-              labelStyle={styles.buttonFont}
-              icon="plus-circle"
-              compact
-              onPress={_addHandler}>
-              ADD ITEM
-            </Button>
+            <View style={styles.buttonsContainer}>
+              <Button
+                style={styles.buttonContainer}
+                labelStyle={styles.buttonFont}
+                icon="close-circle-outline"
+                compact
+                onPress={_dismissHandler}>
+                DISMISS
+              </Button>
+              <Button
+                style={styles.buttonContainer}
+                labelStyle={styles.buttonFont}
+                icon="plus-circle"
+                compact
+                onPress={_submitHandler}>
+                SUBMIT
+              </Button>
+            </View>
           </ScrollView>
         </View>
       </SafeAreaView>
     </Form>
+  ) : (
+    <></>
   );
 };
-
-export default AddScreen;
+export default EditScreen;

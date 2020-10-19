@@ -1,5 +1,5 @@
 import React, {ReactElement, useEffect} from 'react';
-import {Pressable} from 'react-native';
+import {Pressable, View} from 'react-native';
 import {Text} from 'react-native';
 import {Avatar} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
@@ -29,10 +29,10 @@ const FoodScreen = ({navigation}: any): ReactElement => {
         {list.length ? (
           <ListComponent list={list} variant={Variants.FOOD} />
         ) : (
-          <>
+          <View style={styles.container}>
             <Text>THIS LIST IS EMPTY RIGHT NOW</Text>
             <Text>DONT HESITATE TO ADD SOME STUFF</Text>
-          </>
+          </View>
         )}
       </Pressable>
     </SafeAreaView>

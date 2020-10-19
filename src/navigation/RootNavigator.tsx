@@ -1,19 +1,22 @@
+import React, {ReactElement} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import ActivityOverlayComponent from 'src/components/ActivityOverlay/ActivityOverlay';
-import {DrawerNavigator} from 'src/navigation/DrawerNavigator';
-import Screens from 'src/navigation/Screens';
-import React, {ReactElement} from 'react';
-import {useSelector} from 'react-redux';
+import {setTopLevelNavigator} from 'src/navigation/topLevelNavigator';
 import {RootStackParamList} from 'src/navigation/types';
+import {DrawerNavigator} from 'src/navigation/DrawerNavigator';
 import AuthStack from 'src/navigation/AuthorizationStack';
+import Screens from 'src/navigation/Screens';
+import ActivityOverlayComponent from 'src/components/ActivityOverlay/ActivityOverlay';
+import {useSelector} from 'react-redux';
 import {selectLoading} from 'src/store/items/items.selector';
 import {selectLoginLoading, selectUser} from 'src/store/user/user.selector';
 
 const Navigation = (): ReactElement => {
-  //TODO ADD REFERENCE TO CURRENT NAVIGATOR AND NAVIGATION SERVICES
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      ref={(navigatorRef: any) => {
+        setTopLevelNavigator(navigatorRef);
+      }}>
       <RootNavigator />
     </NavigationContainer>
   );
@@ -35,7 +38,7 @@ const RootNavigator = (): ReactElement => {
           <Stack.Screen name={Screens.AUTHORIZATION} component={AuthStack} />
         )}
       </Stack.Navigator>
-      {loadingAuth || (loadingItems && <ActivityOverlayComponent />)}
+      {(loadingAuth || loadingItems) && <ActivityOverlayComponent />}
     </>
   );
 };

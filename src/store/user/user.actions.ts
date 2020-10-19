@@ -84,3 +84,9 @@ export const logoutResolved = (): Action => ({
 export const logoutRejected = (): Action => ({
   type: LOGOUT.rejected,
 });
+
+export const SWITCH_LOADER = 'SWITCH_LOADER';
+export const switchLoader = (state: boolean): ActionPayload<boolean> => ({
+  type: SWITCH_LOADER,
+  payload: state,
+});
