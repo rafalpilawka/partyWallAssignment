@@ -10,19 +10,15 @@ import {TVariant} from 'src/store/items/items.types';
 import {selectUser} from 'src/store/user/user.selector';
 import {InputValidators} from 'src/utils/helpers/validators';
 import {styles} from './styles';
+import {TInputNames, useEditValues} from 'src/hooks/useEditValues';
 
 const AddScreen = (): ReactElement => {
   const user = useSelector(selectUser);
-  const [price, setPrice] = useState('');
-  const [name, setName] = useState('');
+  const {values, setValues, clearValues} = useEditValues();
   const [type, setType] = useState('');
   const [variant, setVariant] = useState<TVariant>('food');
-  const [description, setDescription] = useState('');
-  const [volume, setVolume] = useState('');
-  const [weight, setWeight] = useState('');
   const [visible, setVisible] = useState(false);
   const uid = user?.uid;
-  const [errors, setErrors] = React.useState(null);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
@@ -34,14 +30,9 @@ const AddScreen = (): ReactElement => {
   }, [isFocused]);
 
   const _clearForm = () => {
-    setPrice('');
-    setName('');
+    clearValues();
     setType('');
-    setDescription('');
-    setVolume('');
-    setWeight('');
     setVisible(false);
-    setErrors(null);
   };
 
   //TODO ADD FORMIK VALIDATION FOR YUP SCHEME AND CONVERT LOCAL STATES TO USE REDUCER
@@ -53,10 +44,15 @@ const AddScreen = (): ReactElement => {
     setVariant(variant);
     _toggleMenu();
   };
+
+  const _setValue = (text: string, inputName: keyof TInputNames) => {
+    const valuesObject = {...values, [inputName]: text};
+    setValues(valuesObject);
+  };
   const _addHandler = (): void => {
     const itemData = {
       name,
-      price: +price,
+      price: +values.price,
       type,
     };
     if (variant === 'food') {
@@ -68,13 +64,13 @@ const AddScreen = (): ReactElement => {
               ...itemData,
               variant,
               createdBy: uid,
-              description,
-              weight: +weight,
+              description: values.description,
+              weight: +values.weight,
             }),
           );
           _clearValues();
         })
-        .catch((err) => setErrors(err));
+        .catch((err) => _setValue(err, 'errors'));
     }
     if (variant === 'drink') {
       InputValidators.addDrinkItemScheme
@@ -85,7 +81,7 @@ const AddScreen = (): ReactElement => {
               ...itemData,
               variant,
               createdBy: uid,
-              volume: +volume,
+              volume: +values.volume,
             }),
           );
           _clearValues();
@@ -95,13 +91,8 @@ const AddScreen = (): ReactElement => {
   };
   //TODO LATER ON MOVE ALL STATES TO FORMIK AND ADD CLEAR FORM HANDLER TO SAGA - AFTER SUBMITTING AND 200 CLEAR VALUES
   const _clearValues = (): void => {
-    setPrice('');
-    setName('');
     setType('');
     setVariant('food');
-    setDescription('');
-    setVolume('');
-    setWeight('');
     setVisible(false);
   };
 
@@ -110,16 +101,16 @@ const AddScreen = (): ReactElement => {
       <>
         <TextInput
           label="Description"
-          value={description}
-          onChangeText={(text) => setDescription(text)}
+          value={values.description}
+          onChangeText={(text) => _setValue(text, 'description')}
           mode="outlined"
           style={styles.input}
           multiline
         />
         <TextInput
           label="Weight"
-          value={weight}
-          onChangeText={(text) => setWeight(text)}
+          value={values.weight}
+          onChangeText={(text) => _setValue(text, 'weight')}
           mode="outlined"
           style={styles.input}
           keyboardType="decimal-pad"
@@ -128,8 +119,8 @@ const AddScreen = (): ReactElement => {
     ) : (
       <TextInput
         label="Volume"
-        value={volume}
-        onChangeText={(text) => setVolume(text)}
+        value={values.volume}
+        onChangeText={(text) => _setValue(text, 'volume')}
         mode="outlined"
         style={styles.input}
         keyboardType="decimal-pad"
@@ -166,8 +157,8 @@ const AddScreen = (): ReactElement => {
             </Menu>
             <TextInput
               label="Item name"
-              value={name}
-              onChangeText={(text) => setName(text)}
+              value={values.name}
+              onChangeText={(text) => _setValue(text, 'name')}
               mode="outlined"
               style={styles.input}
             />
@@ -181,15 +172,15 @@ const AddScreen = (): ReactElement => {
             {_renderVariant()}
             <TextInput
               label="Price"
-              value={price.toString()}
-              onChangeText={(text) => setPrice(text)}
+              value={values.price.toString()}
+              onChangeText={(text) => _setValue(text, 'price')}
               mode="outlined"
               style={styles.input}
               textContentType="password"
               keyboardType="decimal-pad"
               onSubmitEditing={_addHandler}
             />
-            {errors && (
+            {values.errors && (
               <Text style={{color: 'red'}}>
                 There are some problems with form , please check it out
               </Text>
